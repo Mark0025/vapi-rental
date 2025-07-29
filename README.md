@@ -68,3 +68,4 @@ This project enables automated extraction of rental property data from public re
 ## License
 
 MIT
+# vapi-rental
