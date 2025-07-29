@@ -1,0 +1,22 @@
+{
+  "function": {
+    "name": "rental_lookup",
+    "description": "Look up available rental properties from a specified website using our local agent.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "website": {
+          "type": "string",
+          "description": "The website URL to look up rental properties from."
+        }
+      },
+      "required": ["website"]
+    }
+  },
+  "server": {
+    "url": "https://52e0b2342993.ngrok-free.app/rental-lookup",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

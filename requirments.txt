@@ -1,0 +1,6 @@
+langchain
+wikipidea
+langchain-community
+langchain-anthropic
+python-dotenv
+pytandic

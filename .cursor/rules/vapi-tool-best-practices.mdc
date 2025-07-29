@@ -1,0 +1,85 @@
+# Vapi Tool Definition Rule (custom_tools_vapi)
+
+**Always follow these guidelines when writing or updating Vapi tool definitions for custom_tools_vapi:**
+
+1. **Do NOT include `id`, `orgId`, or `type` fields in the JSON body when creating or updating a tool via the API or CLI.**
+
+   - These fields are managed by Vapi and should only be used for reference, not in the payload.
+
+2. **Always specify the `function` and `server` objects:**
+
+   - `function` must include:
+     - `name`: Unique, descriptive function name.
+     - `description`: Clear, concise description of the tool's purpose.
+     - `parameters`: JSON Schema object describing expected input.
+   - `server` must include:
+     - `url`: Endpoint the tool will call (use ngrok URL for local dev).
+     - `headers`: Only necessary headers (e.g., `"Content-Type": "application/json"`). Do NOT include API keys if your backend handles them.
+
+3. **For local development, point `server.url` to your ngrok-exposed FastAPI proxy endpoint.**
+
+   - Example: `"url": "https://xxxxxx.ngrok-free.app/rental-lookup"`
+
+4. **Never expose sensitive API keys in the tool definition.**
+
+   - All secrets must be managed in `.env` and handled by your backend/proxy.
+
+5. **When updating a tool, use PATCH and only include fields you want to update.**
+
+   - Example:
+     ```sh
+     curl -X PATCH "https://api.vapi.ai/tool/<tool-id>" \
+       -H "Authorization: Bearer $VAPI_API_KEY" \
+       -H "Content-Type: application/json" \
+       -d @rental_lookup_tool.json
+     ```
+
+6. **Validate your JSON before pushing or updating.**
+
+   - Ensure it is valid and matches the expected Vapi schema.
+
+7. **Document the tool’s purpose, input, and output in your project documentation.**
+
+---
+
+## Example Minimal Tool JSON
+
+```json
+{
+  "function": {
+    "name": "rental_lookup",
+    "description": "Look up available rental properties from a specified website using our local agent.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "website": {
+          "type": "string",
+          "description": "The website URL to look up rental properties from."
+        }
+      },
+      "required": ["website"]
+    }
+  },
+  "server": {
+    "url": "https://xxxxxx.ngrok-free.app/rental-lookup",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
+```
+
+---
+
+**Summary:**
+
+- Exclude `id`, `orgId`, `type` from payloads.
+- Only include `function` and `server` in the JSON.
+- Never expose secrets.
+- Use ngrok for local dev.
+- Document and validate everything.
+  description:
+  globs:
+  alwaysApply: false
+
+---
